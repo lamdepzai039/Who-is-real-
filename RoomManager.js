@@ -1,4 +1,4 @@
-const { Room, generateRoomCode } = require('../game/Room');
+const { Room, generateRoomCode } = require('./Room');
 
 class RoomManager {
   constructor() {
