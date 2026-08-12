@@ -1,7 +1,14 @@
 const { GameState, STATES } = require('./GameState');
 
-const MIN_PLAYERS = 6;
-const MAX_PLAYERS = 12;
+// Configurable so the game can be play-tested solo/in small groups without
+// waiting for 6 real people. Production deploys should leave these unset
+// (defaults to the designed 6-12 range).
+const MIN_PLAYERS = clamp(parseInt(process.env.MIN_PLAYERS, 10) || 6, 1, 12);
+const MAX_PLAYERS = clamp(parseInt(process.env.MAX_PLAYERS, 10) || 12, MIN_PLAYERS, 20);
+
+function clamp(n, lo, hi) {
+  return Math.min(Math.max(n, lo), hi);
+}
 const ROOM_CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I ambiguity
 
 function generateRoomCode(length = 5) {
