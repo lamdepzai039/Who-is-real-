@@ -110,14 +110,25 @@
   });
 
   socket.on('room:countdown', ({ seconds }) => {
+    if (!currentRoom) return; // stray event for a room this tab isn't actually in
     const overlay = UI.$('countdownOverlay');
     overlay.hidden = false;
     UI.$('countdownNumber').textContent = seconds;
   });
 
   socket.on('game:started', () => {
+    if (!currentRoom) return; // stray event for a room this tab isn't actually in
     UI.$('countdownOverlay').hidden = true;
     UI.showScreen('screen-game');
+  });
+
+  socket.on('disconnect', () => {
+    // Connection dropped (or this tab reloaded mid-flow) - don't leave a
+    // countdown overlay or lobby state hanging around for a room we're
+    // no longer actually part of.
+    currentRoom = null;
+    myPlayerId = null;
+    UI.$('countdownOverlay').hidden = true;
   });
 
   function escapeHtml(str) {
