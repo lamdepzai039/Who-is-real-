@@ -3,7 +3,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const RoomManager = require('./utils/RoomManager');
+const RoomManager = require('./game/RoomManager');
 const Player = require('./game/Player');
 const { STATES } = require('./game/GameState');
 
